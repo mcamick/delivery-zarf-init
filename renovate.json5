@@ -25,7 +25,7 @@
         "(^|/)zarf(-.+)?\\.ya?ml$", // Matches "zarf*.yaml" and "zarf*.yml"
       ],
       "matchStrings": [
-        // Matches agent_image_tag, registry_image_tag, gitea_image, etc.
+        // Matches for fields like agent_image_tag, registry_image_tag, gitea_image, etc.
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*agent_image_tag: (?<currentValue>.*)\\s",
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*registry_image_tag: (?<currentValue>.*)\\s",
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*version: (?<currentValue>.*)\\s",
@@ -38,19 +38,6 @@
         "injector_arm64_shasum: (?<currentValue>.*?)"
       ],
       "versioningTemplate": "semver"
-    }
-  ],
-  // Add a rule to watch the external Zarf repo
-  "packageRules": [
-    {
-      "description": "Track the external zarf-config.toml file from zarf-dev/zarf repo",
-      "matchPackagePatterns": ["^zarf-config"],
-      "datasource": "github-tags",
-      "depName": "zarf-dev/zarf",
-      "lookupName": "zarf-dev/zarf",
-      "fileMatch": ["^zarf-config\\.toml$"],
-      "versioning": "semver",
-      "extractVersion": "^v?(?<version>[\\d\\.]+)$"
     }
   ],
   "docker": {
