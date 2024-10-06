@@ -18,7 +18,7 @@ jobs:
     steps:
       # Step 1: Checkout your repository
       - name: Checkout the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Step 2: Fetch the external zarf-config.toml from the zarf-dev/zarf repo
       - name: Fetch zarf-config.toml from zarf-dev
