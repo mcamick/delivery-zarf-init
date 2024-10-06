@@ -1,0 +1,54 @@
+name: Zarf Injector Update
+
+on:
+  # Trigger when Renovate creates or updates a pull request
+  pull_request:
+    types: [opened, synchronize]
+  # Trigger when changes are pushed to the main branch (after PR merge)
+  push:
+    branches:
+      - main
+  # Allow manual triggering of the workflow
+  workflow_dispatch:
+
+jobs:
+  update-injector-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout your repository
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      # Step 2: Fetch the external zarf-config.toml from the zarf-dev/zarf repo
+      - name: Fetch zarf-config.toml from zarf-dev
+        run: |
+          git clone https://github.com/zarf-dev/zarf.git
+          cp zarf/zarf-config.toml .
+
+      # Step 3: Parse and extract values from zarf-config.toml
+      - name: Parse and update zarf-config.yaml
+        run: |
+          # Extract values from the zarf-config.toml file
+          version=$(grep 'injector_version =' zarf-config.toml | cut -d"'" -f2)
+          amd64_shasum=$(grep 'injector_amd64_shasum =' zarf-config.toml | cut -d"'" -f2)
+          arm64_shasum=$(grep 'injector_arm64_shasum =' zarf-config.toml | cut -d"'" -f2)
+
+          # Log extracted values (optional for debugging)
+          echo "Injector Version: $version"
+          echo "Injector AMD64 SHA: $amd64_shasum"
+          echo "Injector ARM64 SHA: $arm64_shasum"
+
+          # Update the local zarf-config.yaml file with these values
+          sed -i "s/injector_version: .*/injector_version: \"$version\"/" zarf-config.yaml
+          sed -i "s/injector_amd64_shasum: .*/injector_amd64_shasum: $amd64_shasum/" zarf-config.yaml
+          sed -i "s/injector_arm64_shasum: .*/injector_arm64_shasum: $arm64_shasum/" zarf-config.yaml
+
+      # Step 4: Commit and push changes back to the repository
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions Bot"
+          git add zarf-config.yaml
+          git commit -m "Update Zarf injector version and shasums from zarf-config.toml"
+          git push

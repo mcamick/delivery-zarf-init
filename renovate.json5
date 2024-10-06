@@ -12,6 +12,9 @@
   ],
   "timezone": "America/New_York",
   "schedule": ["at any time"],
+  "postUpdateOptions": [
+    "git-push"  // Ensure Renovate pushes its changes after updating
+  ],
   "rebaseWhen": "auto",
   "labels": ["renovate"],
   "prHourlyLimit": 0,
@@ -30,12 +33,7 @@
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*registry_image_tag: (?<currentValue>.*)\\s",
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*version: (?<currentValue>.*)\\s",
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?gitea_image: \"[^\"]+:(?<currentValue>[^\"]+)\"\\s",
-        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?init:(?<currentValue>[^\\s]+)\\s",
-
-        // Regex for injector_version in zarf-config.yaml
-        "injector_version: \"(?<currentValue>.*?)\"",
-        "injector_amd64_shasum: (?<currentValue>.*?)",
-        "injector_arm64_shasum: (?<currentValue>.*?)"
+        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?init:(?<currentValue>[^\\s]+)\\s"
       ],
       "versioningTemplate": "semver"
     }

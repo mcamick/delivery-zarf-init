@@ -9,7 +9,6 @@ package:
       agent_image_tag: v0.41.0
 
       # Tag for the zarf injector binary to use
-      # renovate: datasource=github-releases depName=zarf-dev/zarf versioning=semver
       injector_version: "2023-05-21"
       injector_amd64_shasum: wrong
       injector_arm64_shasum: wrong
